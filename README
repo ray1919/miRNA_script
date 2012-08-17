@@ -1,1 +1,142 @@
-鏇存柊璇存槑.txt
++: 新增内容
+-: 删减内容
+!: 变动内容
+
+待更新：整合Combat分析, product号lot号mb号一起作为区分不同批次的依据
+
+---- miRNA_1c_ana_v120626.pl ----
+!  低信号过滤阈值50修改为30。与以往代码比较，生成数据标准值、数据图表将会有较大差别。
+!  All Differentially Expressed miRNAs中"ID","Name","Fold change"等说明修改为与汇总表说明一致。
+
+---- miRNA_1c_ana_v120601.pl ----
++  增加日志summary.txt内容，列出散点图的每个比较。
++  代码运行过程中增加了“是否输出组内两两比较三点图”的提问。
+！ 修改了All differentially expressed genes.xlsx中成组比较的表头说明。
+
+---- miRNA_1c_ana_v120518.pl ----
+!  代码运行需要安装一个新的Perl模块——Data::Table支持。
+!  Raw Intensity File.xlsx数据表按不同批次LotNumber列出芯片数据，
+   含多个批次芯片的Raw Intensity File.xlsx将包括多个工作表。工作表
+   的名称将包含批次号码，例如：“Raw Intensity - Lot34102”
++  Raw Intensity File.xlsx将列出不同批次所有的数据，而不会删除差异
+   部分的数据。
+-  summary.txt中不再列出不同批次差异的探针位置。
+!  “包含不同批次”的提示信息现在只会出现一次，不会多次重复出现了。
+！ Differentially Expressed miRNAs(Pass Volcano Plot).xlsx表头说明
+   修改一处表达错误。
+
+---- miRNA_1c_ana_v120215.pl ----
+!  修改了检查gpr批次信息的方法。原为读取LotNumberRange注释信息，
+   现在对GalFile的文件名进行解析。避免了不同GenePix读图操作，造成
+   LotNumberRange注释信息缺失，而引起代码出错的问题。
++  增加对gpr文件ImageFiles和JpegImage注释信息的比较，当两个文件的
+   所在文件夹不一致时，会输出警告信息，但代码不会终止。防止保存gpr
+   文件时，选错文件夹而导致的错误。
+
+---- miRNA_1c_ana_v120207.pl ----
++  增加对包含英文单引号(')的样品名支持。至今为止，支持的非数字、
+   字母字符为+、-、'三个。
++  增加对一比多比较设定的支持。
+！ 修正了当同时出现单样品间比较和组间比较时，All Differentially 
+   Expressed miRNAs.xlsx表中都会出现p value和CV value注释的bug。
+
+---- miRNA_1c_ana_v120202.pl ----
++  新增支持多对一比较的散点图，单一样品分组使用此样品名做组名。例如:
+   A,B,C(Test) vs Control(Control)。
+-  精简代码运行时输出的说明。
+！ summary.txt现移至[temp]文件夹，取消[result]文件夹的创建。
+!  修正一个样品出现在多个分组中时，组内某些散点图缺失的bug。
+
+---- miRNA_1c_ana_v120112.pl ----
++  增加对包含+, -符号的命名支持。
++  增加对以数字, +, -为起始的命名支持。
+
+---- miRNA_1c_ana_v111230.pl ----
+!  修正标准化前boxplot图使用原始值作数据的错误，现在标准化前的
+   boxplot图使用修正值数据进行作图。
+
+---- miRNA_1c_ana_v111221.pl ----
+!  这个代码在miRNA_1c_ana_v111125.pl基础上进行修改，
+   miRNA_1c_ana_v111214.pl由于需要安装新的Perl程序，就不更新了
++  恢复对多样品与单样品进行比较的支持
+!  组间比较散点图只产生compare.txt中设定的比较对（之前代码会全
+   部产生）
+!  所有散点图的比较都会对应 y轴样品 比上 x轴样品
+!  修复之前对混合设定出错的bug，例如如下设定
+    C1 vs C2
+    C1 vs C3
+    C2 vs C3
+    A1,B1,C1(ABC1) vs A2,B2,C2(ABC2)
+    A1,B1,C1(ABC1) vs A3,B3,C3(ABC3)
+!  修复对混合设定不能进行成对样品比较的bug
++  summary.txt中将包含运行脚本的版本信息、时间信息、是否成对样品计算。
+
+---- miRNA_1c_ana_v111214.pl ----
+** 此代码在Windows平台使用需要使用Strawberry Perl (strawberryperl.com/)
+** 支持中文命名(组名及样品名)
+** Raw Intensity File.xlsx 中'_f'及'_f_b'恢复为'_原始值'及'_修
+   正值'
+** 恢复对多样品与单样品进行比较的支持
+** summary.txt中包含运行脚本的版本信息、时间信息
+** 需要安装新的perl模块支持
+    Encode
+    Encode::Detect (ActivePerl 不支持)
+    Encode::HanExtra (ActivePerl 不支持)
+** 优化Excel操作代码的可读性
+*  已知bug，当compare设定中同时出现分组比较和多个与单个比较时，
+   散点图、差异基因表会有异样，可以通过手动调整修正
+*  已知bug，当compare.txt文件编码方式为一些特殊编码是，进行中文
+   样品名设定时，代码运行会出错。解决方法为，在Wdindows窗口中右
+   键新建文本文件，手动输入中文设定。(此bug在Linux运行环境不会
+   发生)
+*  由于代码多处改动，发现其他bug时请及时联系我 zr<zzqr@live.cn>
+
+---- miRNA_1c_ana_v111125.pl ----
+** 修正了上次更新带来的各组间存在共同样本情况下，代码出错的bug。
+
+---- miRNA_1c_ana_v111124.pl ----
+** 整合成对分析代码，在运行时如果遇到所有比较均为等样品数量组间
+比较，则询问是否进行成对分析处理，输入y为进行成对处理，其他为普
+通分组处理
+** 修正CV值各列数值与标题行对应样品不一致的bug
+** 优化分组样品排列顺序——在汇总表中，按compare.txt中各样品出现
+顺序进行排序，分组数据（如平均值，CV值）按组名进行排列
+** 去除计算各芯片中位值时出现的读条显示
+** 添加汇总及差异表达数据表标题行自动换行适应行高的特性
+
+---- miRNA_1c_ana_v111123.pl ----
+** 更正了1处拼写错误(buttion => button)，1处语法错误及1处用词
+** 修正了非分组分析报告汇总表中出现P value及CV注释的bug
+
+---- miRNA_1c_ana_v111024.pl ----
+** 修正了，当T检验p value足够小到需要用科学计数法显示时，
+p value无法正确显示的bug。
+
+---- miRNA_1c_ana_v111011.pl ----
+** 更改不同批号ID,Name一致性校验标准：
+1) 同ID的spot采用较高批号(lot number)的Name
+2) 不同ID的spot将被忽略，不参与任何步骤的分析
+** 批号的获取由gpr头信息中"LotNumberRange"获取
+
+---- miRNA_1c_ana_v111009.pl ----
+** 对所分析的gpr文件的ID及Name域进行一致性校验，在各GPR文件
+中同一位置的ID和Name不一致的spot读数将会被作忽略处理。在result
+/summary.txt中会列出所有被忽略的spot的位置信息。
+** 发现当芯片数量多达一定数量后，程序会因散点图过多，而无法
+绘制在单张图片上而报错（无法启动png()装置）。若遇此问题，需要
+手动修改代码，使其停止输出组内比较的散点图，具体细节可以联系我
+msn: zzqr@live.cn
+
+---- miRNA_1c_ana_v110907.pl ----
+** 修正火山图不能根据设定flod-change而变化的严重bug
+** 修正多组比较报告All Differentially Expressed miRNAs.xlsx
+中缺少pv 及 cv 的注释行的bug
+
+---- miRNA_1c_ana_v110906.pl ----
+非分组芯片分析中，
+原有代码输出全部两两比较散点图，现仅输出compare.txt中所定
+义的比较的散点图。
+
+---- miRNA_1c_ana_v110902.pl ----
+修正spike_control.xlsx中Skike v1/v2 median for each slide
+没有对应芯片名字的问题。
